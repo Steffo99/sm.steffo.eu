@@ -25,4 +25,8 @@ def listpage():
     elif request.form["op"] == "xor":
         if len(users) > 2:
             return "error: too many users"
-        return render_template("list.html.j2", l=steammatch.xor_games(users))
+        return render_template("list.html.j2", l=steammatch.xor_games(users[0], users[1]))
+    elif request.form["op"] == "diff":
+        if len(users) > 2:
+            return "error: too many users"
+        return render_template("list.html.j2", l=steammatch.diff_games(users[0], users[1]))
