@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from sm import steammatch
+from smweb.sm import steammatch
 app = Flask(__name__)
 
 @app.route("/")
