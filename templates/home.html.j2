@@ -44,29 +44,29 @@
                 steam-match-web
             </h1>
             <form action="/list" method="POST">
-                <textarea class="form-control" name="input" placeholder="https://steamcommunity.com/id/steffo1999/, https://steamcommunity.com/id/corriscappaceilnemesis"></textarea>
+                <textarea class="form-control" name="input" placeholder="https://steamcommunity.com/id/steffo1999/, https://steamcommunity.com/id/corriscappaceilnemesis, http://steamcommunity.com/profiles/76561198071099951/"></textarea>
                 <div class="radio">
                     <label>
                         <input type="radio" name="op" value="and">
-                        AND
+                        Display games owned by all profiles
                     </label>
                 </div>
                 <div class="radio">
                     <label>
                         <input type="radio" name="op" value="or">
-                        OR
+                        Display games owned by at least one profile
                     </label>
                 </div>
-                <div class="radio">
+                <!--div class="radio">
                     <label>
                         <input type="radio" name="op" value="xor">
-                        XOR
+                        xor
                     </label>
-                </div>
+                </div-->
                 <div class="radio">
                     <label>
                         <input type="radio" name="op" value="diff">
-                        Diff
+                        Display games owned by the first profile but not by the second
                     </label>
                 </div>
                 <input class="btn btn-primary" type="submit" value="Send">
