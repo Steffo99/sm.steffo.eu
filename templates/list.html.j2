@@ -18,7 +18,7 @@
             {% for game in l %}
                 <p>
                     {% if game.icon is equalto "" %}
-                        <img class="steamicon" src=""></div> {{ game.name }}
+                        <img class="steamicon" src=""> {{ game.name }}
                     {% else %}
                         <img class="steamicon" src="http://media.steampowered.com/steamcommunity/public/images/apps/{{ game.appid }}/{{ game.icon }}.jpg"> {{ game.name }}
                     {% endif %}
