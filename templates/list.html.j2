@@ -7,6 +7,13 @@
                 width: 32px;
                 height: 32px;
                 display: inline-block;
+                vertical-align: middle;
+            }
+
+            body {
+                background-color: #1b2838;
+                color: #b8b6b4;
+                font-family: "Segoe UI", sans-serif;
             }
         </style>
     </head>
@@ -18,9 +25,9 @@
             {% for game in l %}
                 <p>
                     {% if game.icon is equalto "" %}
-                        <img class="steamicon" src=""></div> {{ game.name }}
+                        <div class="steamicon"></div> <a href="http://store.steampowered.com/app/{{ game.appid }}/">{{ game.name }}</a>
                     {% else %}
-                        <img class="steamicon" src="http://media.steampowered.com/steamcommunity/public/images/apps/{{ game.appid }}/{{ game.icon }}.jpg"> {{ game.name }}
+                        <img class="steamicon" src="http://media.steampowered.com/steamcommunity/public/images/apps/{{ game.appid }}/{{ game.icon }}.jpg"> <a href="http://store.steampowered.com/app/{{ game.appid }}/">{{ game.name }}</a>
                     {% endif %}
                 </p>
             {% endfor %}
