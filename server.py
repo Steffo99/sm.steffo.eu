@@ -16,7 +16,7 @@ def listpage():
     for user in raw_users:
         user = user.strip(" ").replace("https://steamcommunity.com/id/", "").replace("https://steamcommunity.com/profile/", "").replace("http://steamcommunity.com/id/", "").replace("http://steamcommunity.com/profile/", "")
         if user not in users:
-            users.append()
+            users.append(user)
     if len(users) < 2:
         flash('ERROR: Not enough profiles specified.')
         return redirect(url_for('/'))
