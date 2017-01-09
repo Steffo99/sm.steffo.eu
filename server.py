@@ -19,7 +19,7 @@ def listpage():
         raw_users = []
     users = list()
     for user in raw_users:
-        user = user.strip(" ").replace("https://steamcommunity.com/id/", "").replace("https://steamcommunity.com/profile/", "").replace("http://steamcommunity.com/id/", "").replace("http://steamcommunity.com/profile/", "")
+        user = user.replace("https://steamcommunity.com/id/", "").replace("https://steamcommunity.com/profile/", "").replace("http://steamcommunity.com/id/", "").replace("http://steamcommunity.com/profile/", "").strip(" /")
         if user not in users:
             users.append(user)
     if len(users) < 2:
