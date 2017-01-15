@@ -19,16 +19,36 @@ def listpage():
         raw_users = []
     users = list()
     for user in raw_users:
-        user = user.replace("https://steamcommunity.com/id/", "").replace("https://steamcommunity.com/profile/", "").replace("http://steamcommunity.com/id/", "").replace("http://steamcommunity.com/profile/", "").strip(" /")
+        user = user.replace("https://steamcommunity.com/id/", "").replace("https://steamcommunity.com/profiles/", "").replace("http://steamcommunity.com/id/", "").replace("http://steamcommunity.com/profiles/", "").strip(" /")
         if user not in users:
             users.append(user)
     if len(users) < 2:
         return render_template("error.html.j2", errortitle="Error", errordesc="Not enough profiles specified.")
     if request.form["op"] == "and":
-        return render_template("list.html.j2", l=steammatch.and_games(users))
+        try:
+            return render_template("list.html.j2", l=steammatch.and_games(users))
+        except steammatch.InvalidVanityURLError as e:
+            return render_template("error.html.j2", errortitle="Error", errordesc="Invalid Vanity URL: {}".format(e.vanity))
+        except Exception as e:
+            return render_template("error.html.j2", errortitle="Unknown error", errordesc=repr(e))
     elif request.form["op"] == "or":
-        return render_template("list.html.j2", l=steammatch.or_games(users))
+        try:
+            return render_template("list.html.j2", l=steammatch.or_games(users))
+        except steammatch.InvalidVanityURLError as e:
+            return render_template("error.html.j2", errortitle="Error", errordesc="Invalid Vanity URL: {}".format(e.vanity))
+        except Exception as e:
+            return render_template("error.html.j2", errortitle="Unknown error", errordesc=repr(e))
     elif request.form["op"] == "xor":
-        return render_template("list.html.j2", l=steammatch.xor_games(users[0], users[1]))
+        try:
+            return render_template("list.html.j2", l=steammatch.xor_games(users[0], users[1]))
+        except steammatch.InvalidVanityURLError as e:
+            return render_template("error.html.j2", errortitle="Error", errordesc="Invalid Vanity URL: {}".format(e.vanity))
+        except Exception as e:
+            return render_template("error.html.j2", errortitle="Unknown error", errordesc=repr(e))
     elif request.form["op"] == "diff":
-        return render_template("list.html.j2", l=steammatch.diff_games(users[0], users[1]))
+        try:
+            return render_template("list.html.j2", l=steammatch.diff_games(users[0], users[1]))
+        except steammatch.InvalidVanityURLError as e:
+            return render_template("error.html.j2", errortitle="Error", errordesc="Invalid Vanity URL: {}".format(e.vanity))
+        except Exception as e:
+            return render_template("error.html.j2", errortitle="Unknown error", errordesc=repr(e))
