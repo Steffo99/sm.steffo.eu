@@ -24,31 +24,20 @@ def listpage():
             users.append(user)
     if len(users) < 2:
         return render_template("error.html.j2", errortitle="Error", errordesc="Not enough profiles specified.")
-    if request.form["op"] == "and":
-        try:
+    try:
+        if request.form["op"] == "and":
             return render_template("list.html.j2", l=steammatch.and_games(users))
-        except steammatch.InvalidVanityURLError as e:
-            return render_template("error.html.j2", errortitle="Error", errordesc="Invalid Vanity URL: {}".format(e.vanity))
-        except Exception as e:
-            return render_template("error.html.j2", errortitle="Unknown error", errordesc=repr(e))
-    elif request.form["op"] == "or":
-        try:
+        elif request.form["op"] == "or":
             return render_template("list.html.j2", l=steammatch.or_games(users))
-        except steammatch.InvalidVanityURLError as e:
-            return render_template("error.html.j2", errortitle="Error", errordesc="Invalid Vanity URL: {}".format(e.vanity))
-        except Exception as e:
-            return render_template("error.html.j2", errortitle="Unknown error", errordesc=repr(e))
-    elif request.form["op"] == "xor":
-        try:
+        elif request.form["op"] == "xor":
             return render_template("list.html.j2", l=steammatch.xor_games(users[0], users[1]))
-        except steammatch.InvalidVanityURLError as e:
-            return render_template("error.html.j2", errortitle="Error", errordesc="Invalid Vanity URL: {}".format(e.vanity))
-        except Exception as e:
-            return render_template("error.html.j2", errortitle="Unknown error", errordesc=repr(e))
-    elif request.form["op"] == "diff":
-        try:
+        elif request.form["op"] == "diff":
             return render_template("list.html.j2", l=steammatch.diff_games(users[0], users[1]))
-        except steammatch.InvalidVanityURLError as e:
-            return render_template("error.html.j2", errortitle="Error", errordesc="Invalid Vanity URL: {}".format(e.vanity))
-        except Exception as e:
-            return render_template("error.html.j2", errortitle="Unknown error", errordesc=repr(e))
+    except steammatch.InvalidVanityURLError as e:
+        return render_template("error.html.j2", errortitle="Error", errordesc="Invalid Vanity URL: {}".format(e.vanity))
+    except steammatch.PrivateProfileError as e:
+        return render_template("error.html.j2", errortitle="Error", errordesc="Profile is private: {}".format(e.steamid))
+    except steammatch.SteamRequestError as e:
+        return render_template("error.html.j2", errortitle="Error", errordesc="Steam API request failed: {} {}".format(e.requeststatus, e.requestcontent))
+    except Exception as e:
+        return render_template("error.html.j2", errortitle="Unknown error", errordesc=repr(e))
