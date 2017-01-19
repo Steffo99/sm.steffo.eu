@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-from sm import steammatch
+from .sm import steammatch
 app = Flask(__name__)
 
 @app.route("/")
