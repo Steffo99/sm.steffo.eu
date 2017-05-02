@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-from .sm import steammatch
+from sm import steammatch
 app = Flask(__name__)
 
 @app.route("/")
@@ -40,4 +40,7 @@ def listpage():
     except steammatch.SteamRequestError as e:
         return render_template("error.html.j2", errortitle="Error", errordesc="Steam API request failed: {} {}".format(e.requeststatus, e.requestcontent))
     except Exception as e:
-        return render_template("error.html.j2", errortitle="Unknown error", errordesc=repr(e))
+        if __debug__:
+            raise
+        else:
+            return render_template("error.html.j2", errortitle="Unknown error", errordesc=repr(e))

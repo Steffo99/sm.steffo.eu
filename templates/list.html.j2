@@ -24,6 +24,10 @@
                 color: #fff !important;
                 text-decoration: none;
             }
+
+            .row {
+                margin-bottom: 8px !important;
+            }
         </style>
     </head>
     <body>
@@ -31,15 +35,21 @@
             <h1>
                 steam-match-web
             </h1>
-            {% for game in l %}
-                <p>
-                    {% if game.icon is equalto "" %}
-                        <div class="steamicon"></div> <a href="http://store.steampowered.com/app/{{ game.appid }}/">{{ game.name }}</a>
-                    {% else %}
-                        <img class="steamicon" src="http://media.steampowered.com/steamcommunity/public/images/apps/{{ game.appid }}/{{ game.icon }}.jpg"> <a href="http://store.steampowered.com/app/{{ game.appid }}/">{{ game.name }}</a>
-                    {% endif %}
-                </p>
-            {% endfor %}
+                {% for row in l|batch(3) %}
+                    <div class="row">
+                        {% for game in row %}
+                            <div class="col-sm-4">
+                                {{ game }}
+                                {% if game.icon is equalto "" %}
+                                    <div class="steamicon"></div> <a href="http://store.steampowered.com/app/{{ game.appid }}/">{{ game.name }}</a>
+                                {% else %}
+                                    <img class="steamicon" src="http://media.steampowered.com/steamcommunity/public/images/apps/{{ game.appid }}/{{ game.icon }}.jpg"> <a href="http://store.steampowered.com/app/{{ game.appid }}/">{{ game.name }}</a>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </body>
 </html>
