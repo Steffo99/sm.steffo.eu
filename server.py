@@ -26,13 +26,13 @@ def listpage():
         return render_template("error.html.j2", errortitle="Error", errordesc="Not enough profiles specified.")
     try:
         if request.form["op"] == "and":
-            return render_template("list.html.j2", l=steammatch.and_games(users))
+            return render_template("list.html.j2", l=sorted(steammatch.and_games(users), key=lambda game: game.name))
         elif request.form["op"] == "or":
-            return render_template("list.html.j2", l=steammatch.or_games(users))
+            return render_template("list.html.j2", l=sorted(steammatch.or_games(users), key=lambda game: game.name))
         elif request.form["op"] == "xor":
-            return render_template("list.html.j2", l=steammatch.xor_games(users[0], users[1]))
+            return render_template("list.html.j2", l=sorted(steammatch.xor_games(users[0], users[1]), key=lambda game: game.name))
         elif request.form["op"] == "diff":
-            return render_template("list.html.j2", l=steammatch.diff_games(users[0], users[1]))
+            return render_template("list.html.j2", l=sorted(steammatch.diff_games(users[0], users[1]), key=lambda game: game.name))
     except steammatch.InvalidVanityURLError as e:
         return render_template("error.html.j2", errortitle="Error", errordesc="Invalid Vanity URL: {}".format(e.vanity))
     except steammatch.PrivateProfileError as e:

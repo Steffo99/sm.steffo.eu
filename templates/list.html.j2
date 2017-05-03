@@ -25,7 +25,7 @@
                 text-decoration: none;
             }
 
-            .row {
+            .extra-margin {
                 margin-bottom: 8px !important;
             }
         </style>
@@ -38,7 +38,7 @@
                 {% for row in l|batch(3) %}
                     <div class="row">
                         {% for game in row %}
-                            <div class="col-sm-4">
+                            <div class="col-md-4 extra-margin">
                                 {{ game }}
                                 {% if game.icon is equalto "" %}
                                     <div class="steamicon"></div> <a href="http://store.steampowered.com/app/{{ game.appid }}/">{{ game.name }}</a>
