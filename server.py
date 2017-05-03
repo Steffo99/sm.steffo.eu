@@ -1,6 +1,13 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
 from sm import steammatch
+from raven.contrib.flask import Sentry
+
+
+with open("sentrytoken.txt") as file:
+    sentrytoken = file.read()
+
 app = Flask(__name__)
+sentry = Sentry(app, dsn='https://{}@sentry.io/164282'.format(sentrytoken))
 
 @app.route("/")
 def home():
@@ -40,7 +47,5 @@ def listpage():
     except steammatch.SteamRequestError as e:
         return render_template("error.html.j2", errortitle="Error", errordesc="Steam API request failed: {} {}".format(e.requeststatus, e.requestcontent))
     except Exception as e:
-        if __debug__:
-            raise
-        else:
-            return render_template("error.html.j2", errortitle="Unknown error", errordesc=repr(e))
+        sentry.captureException()
+        return render_template("error.html.j2", errortitle="Unknown error", errordesc="The error has been reported to the site admin. Try again later!")
