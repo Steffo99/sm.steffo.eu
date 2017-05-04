@@ -1,9 +1,14 @@
+import os, sys
+to_add = os.path.realpath(os.path.dirname(__file__))
+if to_add not in sys.path:
+    sys.path.append(to_add)
+
+import importlib.util
 from flask import Flask, render_template, request, flash, redirect, url_for
-from sm import steammatch
 from raven.contrib.flask import Sentry
+from sm import steammatch
 
-
-with open("sentrytoken.txt") as file:
+with open(os.path.join(os.path.dirname(__file__), "sentrytoken.txt")) as file:
     sentrytoken = file.read()
 
 app = Flask(__name__)
