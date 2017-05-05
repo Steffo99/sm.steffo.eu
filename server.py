@@ -3,8 +3,7 @@ to_add = os.path.realpath(os.path.dirname(__file__))
 if to_add not in sys.path:
     sys.path.append(to_add)
 
-import importlib.util
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request
 from raven.contrib.flask import Sentry
 from sm import steammatch
 
@@ -20,14 +19,11 @@ def home():
 
 @app.route("/list", methods=["POST"])
 def listpage():
-    try:
-        if request.form["op"] == "":
-            return render_template("error.html.j2", errortitle="Error", errordesc="No operation specified.")
-    except KeyError:
+    if "op" not in request.form or request.form["op"] == "":
         return render_template("error.html.j2", errortitle="Error", errordesc="No operation specified.")
-    try:
+    if "input" not in request.form:
         raw_users = request.form["input"].split(",")
-    except KeyError:
+    else:
         raw_users = []
     users = list()
     for user in raw_users:
@@ -45,12 +41,14 @@ def listpage():
             return render_template("list.html.j2", l=sorted(steammatch.xor_games(users[0], users[1]), key=lambda game: game.name))
         elif request.form["op"] == "diff":
             return render_template("list.html.j2", l=sorted(steammatch.diff_games(users[0], users[1]), key=lambda game: game.name))
+        else:
+            return render_template("error.html.j2", errortitle="Error", errordesc="Invalid operation: {}".format(request.form["op"]))
     except steammatch.InvalidVanityURLError as e:
         return render_template("error.html.j2", errortitle="Error", errordesc="Invalid Vanity URL: {}".format(e.vanity))
     except steammatch.PrivateProfileError as e:
         return render_template("error.html.j2", errortitle="Error", errordesc="Profile is private: {}".format(e.steamid))
     except steammatch.SteamRequestError as e:
-        return render_template("error.html.j2", errortitle="Error", errordesc="Steam API request failed: {} {}".format(e.requeststatus, e.requestcontent))
-    except Exception as e:
+        return render_template("error.html.j2", errortitle="Error", errordesc="Steam API request failed: {}".format(e))
+    except:
         sentry.captureException()
         return render_template("error.html.j2", errortitle="Unknown error", errordesc="The error has been reported to the site admin. Try again later!")
