@@ -21,7 +21,7 @@ def home():
 def listpage():
     if "op" not in request.form or request.form["op"] == "":
         return render_template("error.html.j2", errortitle="Error", errordesc="No operation specified.")
-    if "input" not in request.form:
+    if "input" in request.form:
         raw_users = request.form["input"].split(",")
     else:
         raw_users = []
