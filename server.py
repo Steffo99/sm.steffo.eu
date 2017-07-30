@@ -47,8 +47,6 @@ def listpage():
         return render_template("error.html.j2", errortitle="Error", errordesc="Invalid Vanity URL: {}".format(e.vanity))
     except steammatch.PrivateProfileError as e:
         return render_template("error.html.j2", errortitle="Error", errordesc="Profile is private: {}".format(e.steamid))
-    except steammatch.SteamRequestError as e:
-        return render_template("error.html.j2", errortitle="Error", errordesc="Steam API request failed: {}".format(e))
     except:
         sentry.captureException()
         return render_template("error.html.j2", errortitle="Unknown error", errordesc="The error has been reported to the site admin. Try again later!")
